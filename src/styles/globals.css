@@ -1,0 +1,667 @@
+/* ─────────────────────────────────────────────
+   야간 청사진 — 정적 포트폴리오(방안지·잉크·제도 청색)의 어두운 확장판
+   ───────────────────────────────────────────── */
+
+:root {
+  --void: #070c12;
+  --deep: #0c141d;
+  --panel: #0a121a;
+  --ink: #e6edf4;
+  --soft: #7c8fa3;
+  --dim: #c6d3e0;
+
+  --grid: rgba(120, 170, 255, 0.09);
+  --gridx: rgba(120, 170, 255, 0.24);
+  --cyan: #4da3ff;
+  --hot: #ff7a45;
+
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo',
+    'Malgun Gothic', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'D2Coding', Menlo, monospace;
+
+  --pad: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  /* hidden 을 쓰면 body가 스크롤 컨테이너가 되어 ScrollTrigger가 body.scrollTop(항상 0)을
+     읽는다. clip 은 가로 넘침만 막고 스크롤 컨테이너를 만들지 않는다. */
+  overflow-x: clip;
+  background-color: var(--void);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.75;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.mono {
+  font-family: var(--mono);
+}
+
+/* 공통 라벨 */
+.label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin: 0;
+}
+
+.label--accent {
+  color: var(--cyan);
+}
+
+/* ── 로더 ── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: #04080d;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1.05s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.loader[data-done='true'] {
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+}
+.loader__mark {
+  font-family: var(--mono);
+  font-size: clamp(2.5rem, 9vw, 6rem);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+.loader__bar {
+  width: min(46vw, 320px);
+  height: 2px;
+  background: rgba(120, 170, 255, 0.18);
+  margin: 1.4rem auto 0;
+  overflow: hidden;
+}
+.loader__bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--cyan);
+  transition: width 1.15s cubic-bezier(0.3, 0.8, 0.2, 1);
+}
+.loader__bar[data-fill='true'] i {
+  width: 100%;
+}
+
+/* ── 커서 ── */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 190;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease;
+}
+.cursor[data-big='true'] {
+  width: 54px;
+  height: 54px;
+}
+@media (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+}
+
+/* ── 히어로 ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--pad);
+  overflow: hidden;
+}
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 55% at 78% 16%, rgba(77, 163, 255, 0.22), transparent 62%),
+    radial-gradient(60% 45% at 10% 90%, rgba(255, 122, 69, 0.14), transparent 65%);
+}
+.hero__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 36%;
+  height: 1px;
+  background: var(--gridx);
+}
+.hero__rule::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  top: -14px;
+  height: 14px;
+  background-image: linear-gradient(90deg, var(--gridx) 1px, transparent 1px);
+  background-size: 5% 100%;
+}
+.hero > * {
+  position: relative;
+}
+.hero__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 7.5vw, 6rem);
+  /* 한글은 라틴보다 세로 공간이 더 필요하다 — 1.02로 조이면 받침이 잘린다. */
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+  margin: 0;
+  font-weight: 800;
+}
+.hero h1 .line {
+  display: block;
+  overflow: hidden;
+  /* 마스크를 글리프보다 넉넉히 잡고, 늘어난 만큼 레이아웃에서 되돌린다. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.hero h1 .line i {
+  display: block;
+  font-style: normal;
+  transform: translateY(110%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* 로더가 걷힌 뒤 두 줄이 시차를 두고 올라온다. */
+.hero[data-ready='true'] h1 .line i {
+  transform: translateY(0);
+}
+.hero[data-ready='true'] h1 .line:nth-child(2) i {
+  transition-delay: 0.1s;
+}
+.hero__desc {
+  max-width: 33rem;
+  color: var(--soft);
+  font-size: 1rem;
+  margin: 1.6rem 0 0;
+}
+.hero__sig {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* 눈금자 — 정적 페이지에서 이어지는 시그니처 */
+.rulers {
+  width: min(100%, 30rem);
+}
+.ruler {
+  margin-bottom: 0.7rem;
+}
+.ruler b {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--soft);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.ruler__track {
+  position: relative;
+  height: 12px;
+  border-left: 1px solid var(--ink);
+  border-right: 1px solid var(--gridx);
+}
+.ruler__track::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, var(--gridx) 1px, transparent 1px);
+  background-size: 10% 100%;
+}
+.ruler__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--cyan);
+  width: 0;
+  transition: width 1.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ── 포털 ── */
+.portal {
+  height: 340vh;
+  position: relative;
+}
+.portal__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.portal__corner {
+  position: absolute;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  font-size: clamp(2.5rem, 9vw, 7rem);
+  line-height: 1;
+  will-change: transform;
+}
+.portal__corner--l {
+  left: var(--pad);
+  top: var(--pad);
+}
+.portal__corner--r {
+  right: var(--pad);
+  top: var(--pad);
+  color: var(--cyan);
+}
+.portal__dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--hot);
+  will-change: transform;
+}
+.portal__dot--a {
+  left: 18%;
+  bottom: 22%;
+}
+.portal__dot--b {
+  right: 16%;
+  bottom: 30%;
+}
+
+/* 미디어 슬롯 — Higgsfield 영상이 들어오면 <video>가 자리표시자를 덮는다 */
+.portal__frame {
+  position: relative;
+  width: 14vw;
+  height: 10vw;
+  min-width: 120px;
+  min-height: 88px;
+  overflow: hidden;
+  border: 1px solid var(--gridx);
+  will-change: width, height;
+}
+.portal__media,
+.portal__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.portal__fallback {
+  background: radial-gradient(80% 70% at 30% 25%, rgba(77, 163, 255, 0.55), transparent 60%),
+    radial-gradient(70% 60% at 75% 80%, rgba(255, 122, 69, 0.4), transparent 65%),
+    linear-gradient(160deg, #0a2038, #04080d);
+}
+.portal__fallback::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 4px;
+}
+.portal__title {
+  position: absolute;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  padding: 0 1rem;
+}
+.portal__title b {
+  display: block;
+  font-size: clamp(2rem, 7vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+.portal__title b em {
+  font-style: normal;
+  color: var(--hot);
+}
+.portal__title span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #cfe0f2;
+  display: block;
+  margin-top: 1rem;
+}
+.portal__labels {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--pad);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 var(--pad);
+  opacity: 0;
+}
+
+/* ── 프로젝트 패널 ── */
+.panel {
+  min-height: 96svh;
+  position: sticky;
+  top: 0;
+  padding: var(--pad);
+  background-color: var(--panel);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  border-top: 1px solid var(--gridx);
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  will-change: transform, filter;
+}
+.panel::after {
+  content: '';
+  position: absolute;
+  right: -14%;
+  top: -10%;
+  width: 52vw;
+  height: 52vw;
+  border-radius: 50%;
+  border: 1px solid rgba(77, 163, 255, 0.22);
+  box-shadow: inset 0 0 140px rgba(77, 163, 255, 0.12);
+  pointer-events: none;
+}
+.panel--hot::after {
+  border-color: rgba(255, 122, 69, 0.26);
+  box-shadow: inset 0 0 140px rgba(255, 122, 69, 0.1);
+}
+.panel__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 62rem;
+}
+.panel h2 {
+  font-size: clamp(1.9rem, 5vw, 3.8rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  margin: 0.7rem 0 0;
+  font-weight: 800;
+}
+.spec {
+  margin: 2rem 0 0;
+  border-top: 1px solid var(--gridx);
+  max-width: 46rem;
+}
+.spec > div {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(120, 170, 255, 0.1);
+  font-size: 0.9rem;
+}
+.spec dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.spec dd {
+  margin: 0;
+}
+.prose {
+  max-width: 42rem;
+  margin-top: 1.75rem;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--dim);
+}
+.prose strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: rgba(77, 163, 255, 0.12);
+  padding: 0.05em 0.35em;
+}
+.caveat {
+  max-width: 42rem;
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.1rem;
+  border-left: 3px solid var(--hot);
+  background: rgba(255, 122, 69, 0.07);
+  font-size: 0.875rem;
+  color: var(--soft);
+}
+.caveat b {
+  color: var(--ink);
+}
+.mag {
+  display: inline-block;
+  margin-top: 1.75rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--gridx);
+  padding: 0.7rem 1.3rem;
+  border-radius: 99px;
+  will-change: transform;
+}
+
+/* ── 일반 섹션 ── */
+.section {
+  position: relative;
+  z-index: 2;
+  background: var(--void);
+  padding: clamp(4rem, 10vw, 8rem) var(--pad);
+  border-top: 1px solid var(--gridx);
+}
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid var(--gridx);
+  padding-bottom: 0.6rem;
+  margin-bottom: 2.5rem;
+}
+.section__head h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.pipeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  max-width: 52rem;
+}
+.pipeline li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  gap: 1.25rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(120, 170, 255, 0.1);
+}
+.pipeline li::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--cyan);
+  padding-top: 0.2rem;
+}
+.pipeline h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.15rem;
+  letter-spacing: -0.015em;
+}
+.pipeline p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--soft);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.stack li {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  border: 1px solid var(--gridx);
+  padding: 0.2rem 0.6rem;
+  color: var(--soft);
+}
+.stack li[data-core='true'] {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 52rem;
+}
+.rows li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(120, 170, 255, 0.1);
+  font-size: 0.9375rem;
+}
+.rows .when {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--soft);
+  min-width: 10rem;
+}
+
+.contact {
+  text-align: center;
+  padding: clamp(5rem, 14vw, 10rem) var(--pad);
+  border-top: 1px solid var(--gridx);
+  background: var(--void);
+  position: relative;
+  z-index: 2;
+}
+.contact p {
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  max-width: 26ch;
+  margin: 0 auto 2.5rem;
+  font-weight: 800;
+}
+.contact p em {
+  font-style: normal;
+  color: var(--hot);
+}
+.contact__links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+}
+.contact__links a {
+  border-bottom: 1px solid var(--gridx);
+  padding-bottom: 0.2rem;
+}
+
+/* 리빌 */
+.reveal {
+  opacity: 0;
+  transform: translateY(38px);
+}
+
+@media (max-width: 760px) {
+  .portal {
+    height: 260vh;
+  }
+  .portal__corner {
+    font-size: 14vw;
+  }
+  .spec > div {
+    grid-template-columns: 5.5rem 1fr;
+  }
+  .rows .when {
+    min-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .hero h1 .line i {
+    opacity: 1;
+    transform: none;
+  }
+  .portal__title,
+  .portal__labels {
+    opacity: 1;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
