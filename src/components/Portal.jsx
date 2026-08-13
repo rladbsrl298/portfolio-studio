@@ -73,7 +73,10 @@ export default function Portal({ ready, reduced }) {
 
         <div className="portal__frame" data-cursor="big">
           {portal.video ? (
-            <video className="portal__media" ref={video} src={portal.video} loop muted playsInline preload="metadata" />
+            <>
+              <video className="portal__media" ref={video} src={portal.video} loop muted playsInline preload="metadata" />
+              <div className="portal__scrim" aria-hidden="true" />
+            </>
           ) : (
             <div className="portal__fallback" aria-hidden="true" />
           )}

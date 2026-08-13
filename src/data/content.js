@@ -16,7 +16,7 @@ export const profile = {
 export const portal = {
   // Higgsfield 영상이 준비되면 파일을 public/media/ 에 넣고 이 값만 채운다.
   // 예: '/portfolio-studio/media/portal.mp4'  (base 경로 포함)
-  video: null,
+  video: '/portfolio-studio/media/portal.mp4',
   corners: ['설계', '먼저'],
   title: ['문서가 ', '먼저', ' 있었다'],
   sub: 'brief → PRD → 아키텍처 → 적대적 리뷰',
