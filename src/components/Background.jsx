@@ -2,9 +2,9 @@ import { background } from '../data/content'
 
 export default function Background() {
   return (
-    <section className="section" aria-label="교육 · 활동 · 자격">
+    <section className="section" aria-label="교육 · 활동">
       <div className="section__head">
-        <h2>교육 · 활동 · 자격</h2>
+        <h2>교육 · 활동</h2>
       </div>
       <ul className="rows">
         {background.map(([when, what]) => (
