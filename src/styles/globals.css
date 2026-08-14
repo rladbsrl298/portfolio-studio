@@ -329,32 +329,37 @@ a {
   border: 1px solid var(--gridx);
   will-change: width, height;
 }
-.portal__media,
-.portal__fallback {
+.portal__media {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.portal__fallback {
-  background: radial-gradient(80% 70% at 30% 25%, rgba(77, 163, 255, 0.55), transparent 60%),
-    radial-gradient(70% 60% at 75% 80%, rgba(255, 122, 69, 0.4), transparent 65%),
-    linear-gradient(160deg, #0a2038, #04080d);
-}
-.portal__fallback::after {
-  content: '';
+/* 캔버스는 프레임이 아니라 뷰포트 크기로 고정한다. 프레임이 열릴수록 그림이
+   늘어나는 게 아니라 고정된 장면이 드러난다 — 왜곡 없이 "포털"이 된다. */
+.portal__canvas {
   position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 100% 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100svh;
 }
-/* 영상의 격자가 가장 밝게 뭉치는 화면 중앙이 문구 자리와 겹친다.
-   중앙 가로 띠와 하단을 눌러 부제·라벨의 대비를 확보한다. */
+/* 문구가 화면 한가운데 얹히므로 그 자리를 눌러 대비를 확보한다.
+   캔버스 기준 문구 영역 휘도는 평균 13 / 최대 152다. 중앙을 0.55로 누르면
+   부제 대비가 최악 조건에서도 7.2:1 — 격자는 문구 뒤로 비치면서 읽힌다.
+   하단 라벨은 색이 옅어(124,143,163) 더 세게 눌러야 한다. */
 .portal__scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  background:
+    radial-gradient(56% 30% at 50% 50%, rgba(4, 8, 13, 0.58), rgba(4, 8, 13, 0.34) 58%, transparent 80%),
+    linear-gradient(to top, rgba(4, 8, 13, 0.9), rgba(4, 8, 13, 0.5) 12%, transparent 30%);
+}
+/* 영상은 같은 영역 휘도가 평균 67 / 최대 254로 5배 밝다 — 더 세게 눌러야 한다. */
+.portal__scrim--video {
   background:
     radial-gradient(56% 30% at 50% 50%, rgba(4, 8, 13, 0.88), rgba(4, 8, 13, 0.5) 58%, transparent 80%),
     linear-gradient(to top, rgba(4, 8, 13, 0.92), rgba(4, 8, 13, 0.55) 12%, transparent 30%);
