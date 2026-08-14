@@ -35,16 +35,19 @@ export default function Projects({ ready, reduced }) {
       const panels = gsap.utils.toArray('.panel')
 
       // 뒤 패널이 덮어오면 앞 패널을 축소·감광한다.
+      // 패널 배경이 원래 어두워서(#0a121a) 밝기를 많이 떨어뜨리면 검정이 된다.
+      // 시작도 'top bottom'으로 잡으면 화면 하나를 꽉 채우는 동안 어두운 채로
+      // 머문다 — 다음 패널이 절반쯤 올라온 뒤에 짧게 넘긴다.
       panels.forEach((panel, i) => {
         if (i === panels.length - 1) return
         gsap.to(panel, {
-          scale: 0.92,
-          y: -28,
-          filter: 'brightness(.45)',
+          scale: 0.94,
+          y: -22,
+          filter: 'brightness(.72)',
           ease: 'none',
           scrollTrigger: {
             trigger: panels[i + 1],
-            start: 'top bottom',
+            start: 'top 55%',
             end: 'top top',
             scrub: true,
           },
