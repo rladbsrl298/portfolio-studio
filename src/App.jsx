@@ -4,7 +4,6 @@ import { useReducedMotion } from './hooks/useReducedMotion'
 import Loader from './components/Loader'
 import Cursor from './components/Cursor'
 import Hero from './components/Hero'
-import Portal from './components/Portal'
 import Projects from './components/Projects'
 import Method from './components/Method'
 import Background from './components/Background'
@@ -34,7 +33,6 @@ export default function App() {
       <Loader reduced={reduced} onDone={onDone} />
       <Cursor />
       <Hero ready={ready} reduced={reduced} />
-      <Portal ready={ready} reduced={reduced} />
       <Projects ready={ready} reduced={reduced} />
       <Method />
       <Background />

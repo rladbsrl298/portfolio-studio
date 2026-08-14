@@ -13,17 +13,6 @@ export const profile = {
   sheet: 'https://rladbsrl298.github.io/portfolio/',
 }
 
-export const portal = {
-  // null이면 조용한 단색 면이 드러난다 — 지금 쓰는 쪽이다.
-  // 영상을 쓰려면 파일을 public/media/ 에 넣고 base 경로까지 적는다.
-  // 예: '/portfolio-studio/media/portal.mp4' (가독성 스크림이 자동으로 붙는다)
-  video: null,
-  corners: ['설계', '먼저'],
-  title: ['문서가 ', '먼저', ' 있었다'],
-  sub: 'brief → PRD → 아키텍처 → 적대적 리뷰',
-  labels: ['선택 작업 / 2026', '6,747줄의 설계 기록', '서울 · 원격'],
-}
-
 export const projects = [
   {
     id: 'kiniq',
