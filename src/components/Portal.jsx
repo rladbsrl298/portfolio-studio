@@ -2,7 +2,6 @@ import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { portal } from '../data/content'
-import PortalLattice from './PortalLattice'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -74,11 +73,13 @@ export default function Portal({ ready, reduced }) {
 
         <div className="portal__frame" data-cursor="big">
           {portal.video ? (
-            <video className="portal__media" ref={video} src={portal.video} loop muted playsInline preload="metadata" />
+            <>
+              <video className="portal__media" ref={video} src={portal.video} loop muted playsInline preload="metadata" />
+              <div className="portal__scrim" aria-hidden="true" />
+            </>
           ) : (
-            <PortalLattice reduced={reduced} />
+            <div className="portal__plane" aria-hidden="true" />
           )}
-          <div className={`portal__scrim${portal.video ? ' portal__scrim--video' : ''}`} aria-hidden="true" />
         </div>
 
         <div className="portal__title">
