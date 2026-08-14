@@ -4,9 +4,9 @@
 export const profile = {
   name: '김윤기',
   latin: 'KIM YUNGI',
-  role: '의료 도메인 기반 AI 서비스 개발',
-  // ▼ 지원처마다 이 두 줄만 교체한다.
-  headline: ['기획에서 막혔고,', '설계로 답했다.'],
+  role: 'AX 컨설턴트 — AI 전환 설계와 구현',
+  // ▼ 지원처마다 이 두 줄만 교체한다. 두 번째 줄이 시안색으로 강조된다.
+  headline: ['김윤기', '포트폴리오'],
   desc: '보건행정을 전공하고 병원행정사·건강보험사·개인정보보호사 자격을 취득한 뒤, 의료 도메인 지식을 AI 서비스로 옮기는 쪽으로 방향을 잡았습니다. 5개월짜리 팀 서비스, 3일짜리 해커톤, 8일짜리 단독 프로젝트를 문서로 남기며 통과했습니다.',
   email: 'rladbsrl298@gmail.com',
   github: 'https://github.com/rladbsrl298',
@@ -47,7 +47,6 @@ export const projects = [
     spec: [
       ['기간', '2026.07.29 – 07.31 (3일)'],
       ['소속', '바이브코딩대학 AX컨설턴트 1기 해커톤 · LG전자 연계 과제'],
-      ['규모', '8개 팀 · 지원자 약 470명'],
       ['담당', '인증·결과 화면 → 배정 엔진 인계 → 통합'],
     ],
     body: [
@@ -92,17 +91,28 @@ export const method = {
     ['스토리 단위 구현', '기능을 스토리로 나누고 하나씩 끝낸다. 스토리마다 구현 기록을 남긴다.'],
     ['회고와 보류 목록', '에픽이 끝날 때마다 회고를 쓰고, 못 한 일은 지우지 않고 보류 목록으로 추적한다.'],
   ],
+  // true = 시안색 강조. 본인 커밋·저장소 파일로 확인된 것만 올린다(facts.md 근거).
+  // Redis·Qdrant·Docker·Langfuse는 KiniQ 스택이지만 본인이 직접 다뤘는지
+  // 미확인이라 뺐다 — facts.md의 열린 UNKNOWN이다.
   tools: [
     ['BMAD Method', true],
     ['Claude Code', true],
-    ['Supabase', true],
     ['Orca', true],
+    ['Supabase', true],
     ['Next.js', false],
     ['FastAPI', false],
     ['React', false],
-    ['PostgreSQL', false],
-    ['Python', false],
+    ['Vite', false],
+    ['TanStack Query', false],
     ['TypeScript', false],
+    ['Python', false],
+    ['PostgreSQL', false],
+    ['Tortoise ORM', false],
+    ['Drizzle ORM', false],
+    ['SQLite', false],
+    ['Gemini', false],
+    ['Resend', false],
+    ['Locust', false],
   ],
 }
 
