@@ -92,8 +92,8 @@ export const method = {
     ['회고와 보류 목록', '에픽이 끝날 때마다 회고를 쓰고, 못 한 일은 지우지 않고 보류 목록으로 추적한다.'],
   ],
   // true = 시안색 강조. 본인 커밋·저장소 파일로 확인된 것만 올린다(facts.md 근거).
-  // Redis·Qdrant·Docker·Langfuse는 KiniQ 스택이지만 본인이 직접 다뤘는지
-  // 미확인이라 뺐다 — facts.md의 열린 UNKNOWN이다.
+  // Redis·Qdrant·Docker·Langfuse는 KiniQ 스택이지만 직접 다루지 않았다(본인 확인).
+  // 다시 넣지 말 것 — facts.md 해소된 모순 5번.
   tools: [
     ['BMAD Method', true],
     ['Claude Code', true],
