@@ -26,7 +26,6 @@ export const projects = [
       ['소속', '오즈코딩스쿨 K-Digital Training AI 헬스케어 과정 최종 프로젝트'],
       ['담당', '서비스 전 구간 — 프론트엔드 + 백엔드'],
       ['스택', 'FastAPI · PostgreSQL 16 · Tortoise ORM · Vite + React 19 · TypeScript · Tailwind v4 · TanStack Query'],
-      ['구조', '6컨테이너 — nginx · PostgreSQL · Redis · FastAPI(Producer) · AI Worker(Consumer) · Qdrant. Redis Stream 비동기 큐'],
     ],
     body: [
       '40세 이상 만성신장질환(CKD) 위험군을 대상으로, 건강검진 결과를 입력하면 ML 예측을 거쳐 G1~G4 위험 단계를 배정하고 그 단계에 맞는 생활습관 챌린지와 대시보드를 제공하는 서비스입니다. Talos 참여기업이 주제를 제공했습니다 — 주제 제공까지이며 현업 검증 단계는 없었습니다. 팀 4명 중 저는 처음부터 <strong>풀스택</strong>을 맡았고, 팀원들은 RAG 모델링을 담당했습니다.',
